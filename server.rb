@@ -36,3 +36,63 @@ post '/create-checkout-session' do
   })
   redirect session.url, 303
 end
+
+post '/webhook' do
+  event = nil
+  begin
+    sig_header = request.env['HTTP_STRIPE_SIGNATURE']
+    payload = request.body.read
+    event = Stripe::Webhook.construct_event(payload, 
+      sig_header, ENV['STRIPE_WEBHOOK_SECRET'])
+  rescue JSON::ParserError => e
+    #Invalid payload
+    return status 400
+  rescue Stripe::SignatureVerificationError => e
+    #invalid signature
+    return status 400
+  end
+  puts "received event type: #{event.type}"
+
+  case event.type
+  when 'checkout.session.completed'
+    checkout_session = event.data.object
+    # Save an order in your database, marked as 'awaiting payment'
+    create_order(checkout_session)
+
+    # Check if the order is already paid (for example, from a card payment)
+    #
+    # A delayed notification payment will have an `unpaid` status, as
+    # you're still waiting for funds to be transferred from the customer's
+    # account.
+    if checkout_session.payment_status == 'paid'
+      fulfill_order(checkout_session)
+    end
+  when 'checkout.session.async_payment_succeeded'
+    checkout_session = event.data.object
+
+    # Fulfill the purchase...
+    fulfill_order(checkout_session)
+  when 'checkout.session.async_payment_failed'
+    checkout_session = event.data.object
+
+    # Send an email to the customer asking them to retry their order
+    email_customer_about_failed_payment(checkout_session)
+  else
+    puts "unhandled event type: #{event.type}"
+  end
+  return status 200
+end
+
+def fulfill_order(checkout_session)
+  puts "Fulfilling order for #{checkout_session.inspect}"
+end
+
+def create_order(checkout_session)
+  # TODO: fill in with your own logic
+  puts "Creating order for #{checkout_session.inspect}"
+end
+
+def email_customer_about_failed_payment(checkout_session)
+  # TODO: fill in with your own logic
+  puts "Emailing customer about payment failure for: #{checkout_session.inspect}"
+end
