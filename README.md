@@ -26,3 +26,18 @@ ruby server.rb
 ~~~
 
 4. Visit [http://localhost:4242/checkout.html](http://localhost:4242/checkout.html)
+
+## Get support
+
+If you found a bug or want to suggest a new [feature/use case/sample], please [file an issue](../../issues).
+
+If you have questions, comments, or need help with code, we're here to help:
+- on [Discord](https://stripe.com/go/developer-chat)
+- on Twitter at [@StripeDev](https://twitter.com/StripeDev)
+- on Stack Overflow at the [stripe-payments](https://stackoverflow.com/tags/stripe-payments/info) tag
+- by [email](mailto:support+github@stripe.com)
+
+Sign up to [stay updated with developer news](https://go.stripe.global/dev-digest).
+
+## Credits
+Photography Credit for [box of chocolates](https://unsplash.com/photos/6nQS4pJfdRQ): Louis Mornaud
