@@ -40,4 +40,4 @@ If you have questions, comments, or need help with code, we're here to help:
 Sign up to [stay updated with developer news](https://go.stripe.global/dev-digest).
 
 ## Credits
-Photography Credit for [box of chocolates](https://unsplash.com/photos/6nQS4pJfdRQ): Louis Mornaud
+Photography credit for [box of chocolates](https://unsplash.com/photos/6nQS4pJfdRQ): Louis Mornaud
