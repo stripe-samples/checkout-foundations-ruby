@@ -81,17 +81,29 @@ button:hover {
 
 .order-info {
   height: 600px;
+  color: #242d60;
 }
 
 .order-info ul {
   list-style-type: none;
+  font-size: 14px;
 }
 
 .order-info p {
   display: inline;
 }
 
-.order-info h1{
+.order-info h1, h2{
   color: #242d60;
   text-align: center;
+}
+
+#line_items, #total {
+  margin-top:5px;
+  margin-bottom: 5px;
+  padding-right: 20px;
+  height: auto;
+  display:block;
+  font-size: 16px;
+  text-align:right;
 }
