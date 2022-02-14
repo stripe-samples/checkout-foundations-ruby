@@ -78,3 +78,20 @@ button {
 button:hover {
   opacity: 0.8;
 }
+
+.order-info {
+  height: 600px;
+}
+
+.order-info ul {
+  list-style-type: none;
+}
+
+.order-info p {
+  display: inline;
+}
+
+.order-info h1{
+  color: #242d60;
+  text-align: center;
+}

@@ -7,6 +7,19 @@
 <body>
   <section>
     <p>Forgot to add something to your cart? Shop around then come back to pay!</p>
+    <form id="checkout-form" action="/create-checkout-session" method="POST">
+      <button type="submit" id="checkout-button">Return to Checkout</button>
+    </form>
   </section>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      var urlParams = new URLSearchParams(window.location.search);
+      var sessionId = urlParams.get('session_id');
+      let form = document.getElementById("checkout-form");
+      if (sessionId) {
+        form.action=`return-to-checkout?session_id=${sessionId}`;
+      }
+  });
+  </script>
 </body>
 </html>
