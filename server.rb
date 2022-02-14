@@ -29,6 +29,21 @@ post '/create-checkout-session' do
       # Provide the exact Price ID (e.g. pr_1234) of the product you want to sell
       price: 'price_1KK6xnCVE8DvCN2eDe52K9XF',
       quantity: 1,
+      adjustable_quantity: {
+        enabled: true,
+        maximum: 10,
+      },
+    },
+    {
+      # Optional 2nd line item. Be sure to replace the price id
+      # with a price id of a product in your account.
+      price: 'price_1KO6TPCVE8DvCN2ecHyva8ez',
+      adjustable_quantity: {
+        enabled: true,
+        maximum: 10,
+        minimum: 3
+      },
+      quantity: 5,
     }],
     mode: 'payment',
     success_url: YOUR_DOMAIN + '/success.html?session_id={CHECKOUT_SESSION_ID}',
@@ -40,9 +55,11 @@ end
 get '/order-info' do
   session = Stripe::Checkout::Session.retrieve(params[:session_id])
   customer = Stripe::Customer.retrieve(session.customer)
+  line_items = Stripe::Checkout::Session.list_line_items(session.id, {limit: 100}) 
   {
     session: session,
-    customer: customer
+    customer: customer,
+    line_items: line_items
   }.to_json
 end
 
@@ -99,6 +116,8 @@ end
 
 def fulfill_order(checkout_session)
   puts "Fulfilling order for #{checkout_session.inspect}"
+  line_items = Stripe::Checkout::Session.list_line_items(checkout_session.id, {limit: 100})
+  puts "Line items for order #{line_items.data.inspect}"
 end
 
 def create_order(checkout_session)
