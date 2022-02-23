@@ -48,6 +48,16 @@ post '/create-checkout-session' do
     mode: 'payment',
     success_url: YOUR_DOMAIN + '/success.html?session_id={CHECKOUT_SESSION_ID}',
     cancel_url: YOUR_DOMAIN + '/cancel.html?session_id={CHECKOUT_SESSION_ID}',
+    consent_collection: {
+      promotions: 'auto'
+    },
+    after_expiration: {
+      recovery: {
+        enabled: true,
+        allow_promotion_codes: true
+      }
+    },
+    expires_at: Time.now.to_i + (3600 * 2), # configure to expire after 2 hours
   })
   redirect session.url, 303
 end
@@ -98,6 +108,10 @@ post '/webhook' do
     if checkout_session.payment_status == 'paid'
       fulfill_order(checkout_session)
     end
+
+    unless checkout_session.recovered_from.nil?
+      log_recovered_cart(checkout_session)
+    end
   when 'checkout.session.async_payment_succeeded'
     checkout_session = event.data.object
 
@@ -108,6 +122,12 @@ post '/webhook' do
 
     # Send an email to the customer asking them to retry their order
     email_customer_about_failed_payment(checkout_session)
+  when 'checkout.session.expired'
+    checkout_session = event.data.object
+    if checkout_session&.consent &&
+       checkout_session.consent&.promotions == 'opt_in'
+      email_customer_about_abandoned_cart(checkout_session)
+    end
   else
     puts "unhandled event type: #{event.type}"
   end
@@ -128,4 +148,17 @@ end
 def email_customer_about_failed_payment(checkout_session)
   # TODO: fill in with your own logic
   puts "Emailing customer about payment failure for: #{checkout_session.inspect}"
+end
+
+def email_customer_about_abandoned_cart(checkout_session)
+  # TODO: fill in with your own logic
+  return if checkout_session.customer_details.email.nil?
+
+  puts "Recovery email to send to customer:
+      #{checkout_session.after_expiration.recovery.url}"
+end
+
+def log_recovered_cart(checkout_session)
+  # TODO fill in with your own logic
+  puts "#{checkout_session.id} recovered from #{checkout_session.recovered_from}"
 end
