@@ -36,6 +36,7 @@ You can see the code shown in each 101 episode by video by viewing the correspon
 3. [Build notifications into Checkout](https://www.youtube.com/watch?v=EaX444Fe2Tk): Add a webhook handler to your Checkout integration so you know when you've gotten paid and can fulfill the order.  [PR](https://github.com/stripe-samples/checkout-foundations-ruby/pull/1)
 4. [Build a customer order confirmation page with Checkout](https://www.youtube.com/watch?v=COeMEHKbECw): Use the Checkout Session ID to look up order information after the customer has completed their purchase to display on the success page.  Allow your customers to return to their Checkout session from the cancel page. [PR](https://github.com/stripe-samples/checkout-foundations-ruby/pull/2)
 5. Add support for adjustable quantities: Let your customer adjust their order during Checkout.  Display the total price and quantities for each line item purchased on the success page.  [PR](https://github.com/stripe-samples/checkout-foundations-ruby/pull/3)
+6. Recover abandoned carts: Configure Checkout to generate a new session when the original session is abandoned by the customer and expires.  Collect consent to send promotional emails and listen for session expired events to know when to reach out to encourage a customer to complete their purchase. [PR](https://github.com/stripe-samples/checkout-foundations-ruby/pull/4)
 
 
 ## Get support
