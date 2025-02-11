@@ -1,3 +1,6 @@
+# This repo has been archived and is no longer maintained. It may be inaccurate and remains archived for historical reasons
+
+
 # Stripe Checkout Foundations
 
 [Stripe Checkout](https://stripe.com/docs/payments/checkout) creates a secure, Stripe-hosted payment page that lets you collect payments quickly. It works across devices and can help increase your conversion. Checkout makes it easy to build a first-class payments experience. 
